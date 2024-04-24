@@ -1,8 +1,11 @@
+import React from 'react'
+import Browser from './components/Browser/Browser'
+import s from './style.module.css'
 
-function App() {
+export default function App() {
   return (
-   ' hello'
-  );
+    <div className={s.container}>
+      <Browser />
+    </div>
+  )
 }
-
-export default App;

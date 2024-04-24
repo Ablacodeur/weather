@@ -1,0 +1,21 @@
+.icon{
+    position: absolute;
+    margin-left: 20px;
+    margin-top: 15px;
+    color: #E5E7EB;
+}
+
+.input{
+    border-radius: 30px;
+    height: 50px;
+    width: 25%;
+    background-color: transparent;
+    border-color: #394150;
+    color: #E5E7EB;
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+}
+
+input:focus{
+    outline: none;
+    border: 3px solid #FEBD2E;
+}
