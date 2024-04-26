@@ -1,11 +1,12 @@
 import React from 'react'
 import Browser from './components/Browser/Browser'
 import s from './style.module.css'
+import { Box } from '@mui/material'
 
 export default function App() {
   return (
-    <div className={s.container}>
+    <Box className={s.container}>
       <Browser />
-    </div>
+    </Box>
   )
 }

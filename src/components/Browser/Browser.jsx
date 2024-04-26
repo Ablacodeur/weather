@@ -1,6 +1,6 @@
 import { Box, Stack } from '@mui/material'
 import React from 'react'
-import backImage from "../../assets/images/earth.png"
+import backImage from "../assets/images/earth.png"
 import Navbar from '../Navbar/Navbar'
 import FirsttFloor from '../FirstFloor/FirsttFloor'
 import SecondFloor from '../SecondFloor/SecondFloor'

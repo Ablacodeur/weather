@@ -1,26 +1,48 @@
-import { Card,CardContent, Typography } from '@mui/material'
-import React from 'react'
+import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
+import React from 'react';
+import s from "./style.module.css";
+import wind_img from '../assets/images/wind.png'
 
-export default function CurrentWeatherCard() {
+export default function CurrentWeatherCard({ temperature, city, hour, weatherIcon, weatherName, wind, feelLike ,min, max}) {
+
   return (
     <div>
-        <Card sx={{ minWidth: 275, maxHeight:'22vh', borderRadius:'20px' }}>
+      <Card sx={{ minWidth: 275, height: {sm:'15vh', md:'15%', lg:'22vh'}, borderRadius: '20px' }}>
         <CardContent>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Word of the Day
-            </Typography>
-            <Typography variant="h5" component="div">
-            benevolent
-            </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            adjective
-            </Typography>
-            <Typography variant="body2">
-            well meaning and kindly.
-            <br />
-            {'"a benevolent smile"'}
-            </Typography>
+          <Stack>
+            <Box>
+              <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant='h4'>{temperature}°</Typography>
+                <Box>
+                  <Typography variant='h5'>{city}</Typography>
+                  <Typography variant='body2' style={{ display: 'flex', justifyContent: 'flex-end' }}>{hour}</Typography>
+                </Box>
+              </Stack>
+            </Box>
+            <Box >
+              <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                {/* Utilisez la prop weatherIcon pour définir la source de l'image */}
+                <Typography variant='p'>
+                  {weatherIcon && <img src={`https://openweathermap.org/img/wn/${weatherIcon}.png`} style={{ objectFit:'cover' }}  className={s.blue} alt="Weather Icon" />}
+                  {weatherName}
+                </Typography>
+                <Typography variant='p'>
+                  <img src={wind_img} alt="wind" style={{ maxHeight:'30px' ,margin:'10px' }} />
+                   {wind} m/s
+                </Typography>
+              </Stack>
+            </Box>
+
+            <Box>
+              <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant='body1'> Feel like: {feelLike} °C</Typography>
+                <Typography variant='body1'>{min}° to {max}°</Typography>
+              </Stack>
+            </Box>
+
+          </Stack>
         </CardContent>
-        </Card></div>
-  )
+      </Card>
+    </div>
+  );
 }

@@ -1,9 +1,56 @@
-import { Box, Grid, Stack } from '@mui/material'
-import React from 'react'
-import CurrentWeatherCard from '../CurrentWeatherCard/CurrentWeatherCard'
-import NextHoursForecast from '../NextHoursForecast/NextHoursForecast'
+import { Box, Grid, Stack } from '@mui/material';
+import React, { useEffect } from 'react';
+import CurrentWeatherCard from '../CurrentWeatherCard/CurrentWeatherCard';
+import NextHoursForecast from '../NextHoursForecast/NextHoursForecast';
+import { useDispatch, useSelector } from 'react-redux';
+import { DataAPI } from '../../api/weather-api';
+import { setWeather } from '../../store/weather-slice';
 
 export default function FirstFloor() {
+  const dispatch = useDispatch();
+  const weather = useSelector((store) => store.WEATHER.weatherInfo);
+  const currentWeather = weather.current;
+  const dayInfo = weather.daily;
+  const nextHours = weather.hourly;
+  console.log(nextHours);
+
+  // convert UTC to local time format
+  const convertUTCToLocalTime = (utcTimestamp) => {
+    const date = new Date(utcTimestamp * 1000);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  };
+
+  // Fonction pour filtrer les prévisions toutes les trois heures
+  function filterNextThreeHours() {
+    // Filtrer les prévisions toutes les trois heures
+    if(nextHours){
+      const filteredHours = nextHours.slice(0,23).filter((hour, index) => index % 3 === 1 || index === 1);
+      return filteredHours;
+      }
+  }
+  // Stocker les prévisions filtrées dans un tableau
+    const filteredNextHours = filterNextThreeHours();
+   
+    // Charger les données météorologiques
+    async function fetchWeatherData() {
+      try {
+        const weatherData = await DataAPI.fetchRecipe();
+        if (weatherData) {
+          dispatch(setWeather(weatherData));
+        }
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+      }
+    }
+
+
+
+  useEffect(() => {
+    fetchWeatherData();
+  }, []);
+
   return (
     <Box>
       <Stack
@@ -12,25 +59,40 @@ export default function FirstFloor() {
         sx={{
           '@media (max-width: 960px)': {
             flexDirection: 'column',
-            gap:'20px',
+            gap: '20px',
           },
         }}
       >
         <Box>
-          <CurrentWeatherCard />
+          <CurrentWeatherCard
+            temperature={currentWeather && Math.round(currentWeather.temp)}
+            city={weather && weather.timezone}
+            hour={currentWeather && convertUTCToLocalTime(currentWeather.dt)}
+            weatherIcon={currentWeather && currentWeather.weather[0].icon}
+            weatherName={currentWeather && currentWeather.weather[0].main}
+            wind={currentWeather && currentWeather.wind_speed}
+            feelLike={currentWeather && Math.round(currentWeather.feels_like)}
+            min={dayInfo && Math.round(dayInfo[0].temp.min)}
+            max={dayInfo && Math.round(dayInfo[0].temp.max)}
+          />
         </Box>
-        
-        <Box sx={{ marginLeft: { md: '65px' },  width: '100%' }}>
 
+        <Box sx={{ marginLeft: { lg: '65px' , md:'10px'}, width: '100%' }}>
           <Grid container columnSpacing={4} rowSpacing={1}>
-            {[...Array(8)].map((_, index) => (
-              <Grid item xs={2} sm={2} lg={1.5} key={index}>
-                <NextHoursForecast />
+            {filteredNextHours && filteredNextHours.map((hour, index) => (
+              <Grid item xs={3} sm={2} md={1.5} key={index}>
+                <NextHoursForecast 
+                hour={convertUTCToLocalTime(hour.dt)} 
+                weatherIcon={hour.weather[0].icon} 
+                weatherName={hour.weather[0].main}
+                temperature={Math.round(hour.temp)}
+
+                />
               </Grid>
             ))}
           </Grid>
         </Box>
       </Stack>
     </Box>
-  )
+  );
 }
