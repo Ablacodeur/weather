@@ -1,60 +1,25 @@
 import { Box, Grid, Stack } from '@mui/material'
-import React, { useEffect } from 'react'
 import FiveDayForecast from '../FiveDayForecast/FiveDayForecast'
 import OtherLargeCityCard from '../OtherLargeCityCard/OtherLargeCityCard'
-import { DataAPI } from '../../api/weather-api'
-import { useDispatch, useSelector } from 'react-redux'
-import { setCity } from '../../store/Larger-city-slice'
+import {useSelector } from 'react-redux';
+
 
 export default function SecondFloor() {
-  const dispatch = useDispatch();
+  const actualWeather = useSelector((store) => store.WEATHER.weatherInfo);
+  const daily = actualWeather.daily;
+  console.log(actualWeather);
+  console.log(daily);
 
-  const weather = useSelector((store) => store.CITY.LargerCity);
-  console.log(weather);
+  const cities= useSelector((store) => store.CITY.LargerCity);
+
+  // Convertit un timestamp UTC en nom du jour de la semaine
+    const getDayOfWeek = (utcTimestamp) => {
+      const date = new Date(utcTimestamp * 1000);
+      const options = { weekday: 'long' };
+      return date.toLocaleDateString('en-US', options); // Utilisez 'en-US' pour obtenir le nom du jour en anglais
+    };
 
 
-  async function fetchNY() {
-    try {
-      const weatherData = await DataAPI.NewYork();
-      if (weatherData) {
-        dispatch(setCity(weatherData));
-      }
-    } catch (error) {
-      console.error('Error fetching weather data:', error);
-    }
-  }
-  async function fetchMontreal() {
-    try {
-      const weatherData = await DataAPI.Montreal();
-      if (weatherData) {
-        dispatch(setCity(weatherData));
-      }
-    } catch (error) {
-      console.error('Error fetching weather data:', error);
-    }
-  }
-  async function fetchFlorida() {
-    try {
-      const weatherData = await DataAPI.Floride();
-      if (weatherData) {
-        dispatch(setCity(weatherData));
-      }
-    } catch (error) {
-      console.error('Error fetching weather data:', error);
-    }
-  }
-
-  useEffect(() => {
-    fetchMontreal();
-  }, []);
-
-  useEffect(() => {
-    fetchFlorida();
-  }, []);
-
-  useEffect(() => {
-    fetchNY();
-  }, []);
 
   return (
     <Box>
@@ -68,15 +33,16 @@ export default function SecondFloor() {
           },
         }}
       >
-        <Box>
-          <h4>Other large cities</h4>
-          <Stack sx={{ justifyContent:'space-between', gap:'10px' }}>
-          { weather && weather.map((city,index)=>{
+
+
+        <Box sx={{ height:'100%' }}>
+        <h4>Other large cities</h4>
+          <Stack sx={{display:'flex', justifyContent:'space-between', gap:'10px' }}>
+          { cities && cities.map((city,index)=>{
 
              //function to split the timmezone name 
 
             const timezones = city.timezone;
-                console.log(timezones);
 
                 let newTimezoneCity = '';
                 let newTimezoneContinent = '';
@@ -95,23 +61,36 @@ export default function SecondFloor() {
               key={index}
               continent={newTimezoneContinent}
               city={city && newTimezoneCity} // Utilisation de la partie après le dernier slash
-              weatherName={city.current.weather[0].main}
-              weatherIcon={city.current.weather[0].icon}
-              temperature={Math.round( city.current.temp)}
+              weatherName={ city && city.current.weather[0].main}
+              weatherIcon={city && city.current.weather[0].icon}
+              temperature={city && Math.round( city.current.temp)}
             />
             )
           })}
           </Stack>
+
         </Box>
         <Box sx={{ marginLeft: { lg: '65px' , md:'10px'}, width: '100%' }}>
           <h4>5-day forecast</h4>
           <Box sx={{display:'flex', justifyContent:'space-between'}}>
-            <Grid container rowSpacing={4}  >
-              {[...Array(5)].map((_, index) => (
-                <Grid item xs={12}  key={index}>
-                  <FiveDayForecast/>
+            <Grid container rowSpacing={5}  >
+            {daily && daily.slice(0,5).map((day, index) => {
+
+              // Votre code ici
+              return (
+                <Grid item xs={12} key={index}>
+                
+                  <FiveDayForecast
+                    key={index}
+                    currentTemp={actualWeather && Math.round(actualWeather.current.temp)}
+                    day={index === 0 ? "Today": getDayOfWeek(day.dt)}
+                    weatherIcon={day.weather[0].icon}
+                    min={Math.round(day.temp.min)}
+                    max={Math.round(day.temp.max)}
+                  />
                 </Grid>
-              ))}
+              );
+            })}
             </Grid>
           </Box>
         </Box>

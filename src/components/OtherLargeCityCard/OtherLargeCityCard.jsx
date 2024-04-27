@@ -1,10 +1,11 @@
 import { Box, Card,CardContent, Stack, Typography } from '@mui/material'
 import React from 'react'
+import s from "./style.module.css"
 
 export default function OtherLargeCityCard({continent,temperature,weatherName,weatherIcon,city}) {
   return (
     <div>
-        <Card sx={{ minWidth: 275, minHeight:'15vh', borderRadius:'15px' }}>
+        <Card sx={{ minWidth: 275, height:'100%', borderRadius:'15px' }}>
         <CardContent>
           <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Box>
@@ -21,7 +22,7 @@ export default function OtherLargeCityCard({continent,temperature,weatherName,we
               <Stack sx={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
                 {/* Utilisez la prop weatherIcon pour définir la source de l'image */}
                 <Typography variant='p'>
-                  <img src={`https://openweathermap.org/img/wn/${weatherIcon}.png`} style={{ objectFit:'cover' }}   alt="Weather Icon" />
+                  <img src={`https://openweathermap.org/img/wn/${weatherIcon}.png`} style={{ objectFit:'cover' }} className={s.blue}  alt="Weather Icon" />
                 </Typography>
                 <Typography variant='h5'>{temperature}°</Typography>
               </Stack>

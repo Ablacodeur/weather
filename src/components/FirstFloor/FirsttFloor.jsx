@@ -1,18 +1,13 @@
 import { Box, Grid, Stack } from '@mui/material';
-import React, { useEffect } from 'react';
 import CurrentWeatherCard from '../CurrentWeatherCard/CurrentWeatherCard';
 import NextHoursForecast from '../NextHoursForecast/NextHoursForecast';
-import { useDispatch, useSelector } from 'react-redux';
-import { DataAPI } from '../../api/weather-api';
-import { setWeather } from '../../store/weather-slice';
+import {useSelector } from 'react-redux';
 
 export default function FirstFloor() {
-  const dispatch = useDispatch();
   const weather = useSelector((store) => store.WEATHER.weatherInfo);
   const currentWeather = weather.current;
   const dayInfo = weather.daily;
   const nextHours = weather.hourly;
-  console.log(nextHours);
 
   // convert UTC to local time format
   const convertUTCToLocalTime = (utcTimestamp) => {
@@ -33,24 +28,6 @@ export default function FirstFloor() {
   // Stocker les prévisions filtrées dans un tableau
     const filteredNextHours = filterNextThreeHours();
    
-    // Charger les données météorologiques
-    async function fetchWeatherData() {
-      try {
-        const weatherData = await DataAPI.fetchRecipe();
-        if (weatherData) {
-          dispatch(setWeather(weatherData));
-        }
-      } catch (error) {
-        console.error('Error fetching weather data:', error);
-      }
-    }
-
-
-
-  useEffect(() => {
-    fetchWeatherData();
-  }, []);
-
   return (
     <Box>
       <Stack
