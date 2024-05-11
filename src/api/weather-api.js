@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL,API_KEY_PARAMS,GEOCODER_BASE_URL } from "../config";
+import { BASE_URL,GEOCODER_BASE_URL } from "../config";
 
 // const FILTER_URL = "www.themealdb.com/api/json/v1/1/filter.php?c=Seafood"
 export class DataAPI{
