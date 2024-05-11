@@ -1,19 +1,63 @@
-import { useState } from "react";
-import s from "./style.module.css";
+import { useState, useEffect } from "react";
 import { Search as SearchIcon } from "react-bootstrap-icons";
+import s from "./style.module.css"; // Importez votre module CSS
 
-export function SearchBar({ placeholder, onTextChange }) {
+export function SearchBar({
+  placeholder,
+  onTextChange,
+  value,
+  locationList,
+  onSearch
+}) 
+{
+  const [showDatalist, setShowDatalist] = useState(locationList.length > 0); // Initialisez showDatalist en fonction de la longueur de locationList
+
+  useEffect(() => {
+    setShowDatalist(locationList.length > 0); // Mettez à jour showDatalist chaque fois que locationList change
+  }, [locationList]);
+
+  const handleSearchClick = () => {
+    setShowDatalist(!showDatalist); // Afficher ou masquer la datalist à chaque clic sur l'icône de recherche
+  };
+
+  const handleOptionSelect = (selectedLocation) => {
+    onTextChange(selectedLocation.name); // Mettre à jour la valeur de l'input avec le nom de la localité seulement
+    setShowDatalist(false); // Masquer la datalist après avoir sélectionné une option
+  };
+  onSearch(locationList)
+
+  // console.log(value);
 
   return (
-    
-    <>
-      <SearchIcon size={25} className={s.icon} />
+    <div className={`input-group `} style={{ borderRadius:'25px',width:'300px' }} >
       <input
         type="text"
-        className={s.input}
+        className={`form-control ${s.input}`}
+        list="datalistOptions"
+        placeholder= {"Tapez pour rechercher..."}
         onChange={onTextChange}
-        placeholder={placeholder}
+        value={value}
+        style={{ backgroundColor:"transparent",border:'1px solid gray',color:'white'}}
       />
-    </>
+      {showDatalist && ( // Afficher la datalist seulement si showDatalist est true
+        <datalist id="datalistOptions">
+          {locationList.map((location, index) => (
+            <option
+              key={index}
+              onClick={() => handleOptionSelect(location)} // Mettre à jour la valeur de l'input lorsqu'une option est sélectionnée
+              value={`${location.name}, ${location.country}`}
+            />
+          ))}
+        </datalist>
+      )}
+      <button
+        className="btn btn-outline-secondary"
+        type="button"
+        onClick={handleSearchClick}
+        style={{ borderRadius:"0 32px 32px 0"}}
+      >
+        <SearchIcon   />
+      </button>
+    </div>
   );
 }

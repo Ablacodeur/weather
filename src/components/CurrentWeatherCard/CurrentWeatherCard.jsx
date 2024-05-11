@@ -4,7 +4,6 @@ import s from "./style.module.css";
 import wind_img from '../assets/images/wind.png'
 
 export default function CurrentWeatherCard({ temperature, city, hour, weatherIcon, weatherName, wind, feelLike ,min, max}) {
-
   return (
     <div>
       <Card sx={{ minWidth: 275, height: {sm:'15vh', md:'15%', lg:'22vh'}, borderRadius: '20px' }}>

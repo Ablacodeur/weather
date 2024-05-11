@@ -1,5 +1,5 @@
 import { Box, Stack } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import backImage from "../assets/images/earth.png"
 import Navbar from '../Navbar/Navbar'
 import FirsttFloor from '../FirstFloor/FirsttFloor'
@@ -11,10 +11,43 @@ import  {setCity} from '../../store/Larger-city-slice'
 
 export default function Browser() {
   const  dispatch = useDispatch();
+  let lat  = '' ;  let lon = ''; 
+  const [location, setLocation] = useState([]);
+  const firstLocation = location[0];
+  const [nameValue, setNameValue] = useState({});
+  const [isDarkMode,setIsDarkMode] =useState('')
+
+  //dark  mode function
+  function modeState(mode){
+    console.log(mode);
+    setIsDarkMode(mode)
+  }
+
+
+  function initialValue(){
+    lat  = 45.54; 
+    lon = -73.51; 
+  }
+
+  // Fonction pour gérer le changement de location
+  function handleLocationChange(newLocation){
+    setLocation(newLocation);
+    setNameValue(newLocation)
+  };
+  function handleName(){
+    setNameValue(nameValue)
+  }
+
+
+  // function pour prendre la nouvelle latitude et longitude
+    if(firstLocation){
+      lat = firstLocation.lat
+      lon= firstLocation.lon     }
+
   // Charger les données météorologiques
     async function fetchWeatherData() {
       try {
-        const weatherData = await DataAPI.fetchWeather();
+        const weatherData = await DataAPI.fetchWeather(lat,lon);
         if (weatherData) {
           dispatch(setWeather(weatherData));
         }
@@ -22,7 +55,7 @@ export default function Browser() {
         console.error('Error fetching weather data:', error);
       }
     }
-
+// console.log(lat,lon);
 // call other cities
 
 async function fetchNY() {
@@ -58,34 +91,32 @@ async function fetchMontreal() {
 
     useEffect(() => {
       fetchMontreal();
-    }, []);
-
-    useEffect(() => {
       fetchFlorida();
-    }, []);
-
-    useEffect(() => {
       fetchNY();
+      initialValue();
     }, []);
 
 
       useEffect(() => {
         fetchWeatherData();
-      }, []);
+      }, [nameValue]);
 
   return (
     <Box sx={{ 
         backgroundImage:`url(${backImage})`,
         backgroundRepeat:'no-repeat',
         backgroundSize:'cover',
-        backgroundColor:'#030616',
+        backgroundColor: isDarkMode ? '#030616' : '#4D609C',        
         color:'#F2F5F9',
         padding:"15px 30px 35px 30px",
-        backgroundAttachment: 'fixed'
+        backgroundAttachment: 'fixed',
      }}>
-    <Navbar />
+    <Navbar  
+      searchedLocation = {handleLocationChange }
+      getTheMode= {modeState} 
+    />
     <Stack sx={{ justifyContent:'space-between',gap:'100px' }}>
-    <FirsttFloor />
+    <FirsttFloor  getTheName= {handleName}   nameValue={nameValue} />
     <SecondFloor />
     </Stack>
     </Box>

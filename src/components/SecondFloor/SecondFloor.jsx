@@ -7,8 +7,6 @@ import {useSelector } from 'react-redux';
 export default function SecondFloor() {
   const actualWeather = useSelector((store) => store.WEATHER.weatherInfo);
   const daily = actualWeather.daily;
-  console.log(actualWeather);
-  console.log(daily);
 
   const cities= useSelector((store) => store.CITY.LargerCity);
 
@@ -22,7 +20,7 @@ export default function SecondFloor() {
 
 
   return (
-    <Box>
+    <Box >
       <Stack 
         direction="row"
         justifyContent="space-between"
