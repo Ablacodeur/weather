@@ -34,9 +34,8 @@ export function SearchBar({
         type="text"
         className={`form-control ${s.input}`}
         list="datalistOptions"
-        placeholder= {"Tapez pour rechercher..."}
+        placeholder= {"Search city..."}
         onChange={onTextChange}
-        value={value}
         style={{ backgroundColor:"transparent",border:'1px solid gray',color:'white'}}
       />
       {showDatalist && ( // Afficher la datalist seulement si showDatalist est true

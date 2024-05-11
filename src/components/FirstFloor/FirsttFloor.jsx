@@ -4,7 +4,7 @@ import NextHoursForecast from '../NextHoursForecast/NextHoursForecast';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 
-export default function FirstFloor({getTheName,nameValue }) {
+export default function FirstFloor({nameValue }) {
   const weather = useSelector((store) => store.WEATHER.weatherInfo);
   const currentWeather = weather.current;
   const dayInfo = weather.daily;
@@ -14,9 +14,9 @@ export default function FirstFloor({getTheName,nameValue }) {
   // Fonction pour convertir l'heure UTC en heure locale en fonction du décalage horaire spécifique à la ville
   const convertUTCToLocalTime = (utcTimestamp, timezoneOffset) => {
     const date = new Date(utcTimestamp * 1000 + timezoneOffset * 1000); // Ajouter le décalage horaire spécifique à la ville en millisecondes
-    const hours = date.getUTCHours(); // Obtenir l'heure UTC
-    const minutes = date.getUTCMinutes(); // Obtenir les minutes UTC
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    const hours = date.getUTCHours('en-US', { hour: '2-digit', hour12: true }); // Obtenir l'heure UTC
+    const minutes = date.getUTCMinutes('en-US', { minute: '2-digit' }); // Obtenir les minutes UTC
+    return `${hours}:${minutes}`;
   
   };
 

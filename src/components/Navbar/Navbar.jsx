@@ -7,8 +7,8 @@ import { SearchBar } from '../SearchBar/SearchBar';
 import "./style.module.css"
 
 export default function Navbar({ searchedLocation, getTheMode }) {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [searchText, setSearchText] = useState('');
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [searchText, setSearchText] = useState('Tokyo');
   const [location, setLocation] = useState([]);
 
   console.log(isDarkMode);
@@ -19,6 +19,7 @@ export default function Navbar({ searchedLocation, getTheMode }) {
 
   const handleChange = (e) => {
     setSearchText(e.target.value);
+
   };
 
   const fetchLocation = async () => {
@@ -56,7 +57,7 @@ export default function Navbar({ searchedLocation, getTheMode }) {
         />
         {/* Bouton pour activer/désactiver le mode sombre */}
         <IconButton onClick={toggleDarkMode} color="inherit">
-          {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />} 
+          {isDarkMode ? <Brightness4Icon /> :  <Brightness7Icon />  } 
         <Typography style={{ paddingLeft:'5px' }}>Theme</Typography>
         </IconButton>
       </Stack>
