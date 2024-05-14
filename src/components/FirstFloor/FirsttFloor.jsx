@@ -11,14 +11,17 @@ export default function FirstFloor({nameValue }) {
   const nextHours = weather.hourly;
   const timezone = weather.timezone_offset; // Assuming timezone_offset contains the offset in seconds
 
+  console.log(weather);
   // Fonction pour convertir l'heure UTC en heure locale en fonction du décalage horaire spécifique à la ville
+// Fonction pour convertir l'heure UTC en heure locale en fonction du décalage horaire spécifique à la ville
   const convertUTCToLocalTime = (utcTimestamp, timezoneOffset) => {
     const date = new Date(utcTimestamp * 1000 + timezoneOffset * 1000); // Ajouter le décalage horaire spécifique à la ville en millisecondes
     const hours = date.getUTCHours(); // Obtenir l'heure UTC
     const minutes = date.getUTCMinutes(); // Obtenir les minutes UTC
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-  
-  };  // Fonction pour filtrer les prévisions toutes les trois heures
+
+  };  
+  // Fonction pour filtrer les prévisions toutes les trois heures
   function filterNextThreeHours() {
     // Filtrer les prévisions toutes les trois heures
     if (nextHours) {
