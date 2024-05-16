@@ -11,7 +11,7 @@ import  {setCity} from '../../store/Larger-city-slice'
 
 export default function Browser() {
   const  dispatch = useDispatch();
-  let lat  = '45.54' ;  let lon = '-73.51'; 
+  let lat  = '' ;  let lon = ''; 
   const [location, setLocation] = useState([]);
   const firstLocation = location[0];
   const [nameValue, setNameValue] = useState({});
@@ -24,6 +24,11 @@ export default function Browser() {
   }
 
 
+  function initialValue(){
+    lat  = 45.54; 
+    lon = -73.51; 
+  }
+
   // Fonction pour gérer le changement de location
   function handleLocationChange(newLocation){
     setLocation(newLocation);
@@ -34,6 +39,10 @@ export default function Browser() {
   }
 
 
+  // function pour prendre la nouvelle latitude et longitude
+    if(firstLocation){
+      lat = firstLocation.lat
+      lon= firstLocation.lon     }
 
   // Charger les données météorologiques
     async function fetchWeatherData() {
@@ -84,7 +93,7 @@ async function fetchMontreal() {
       fetchMontreal();
       fetchFlorida();
       fetchNY();
-      // initialValue();
+      initialValue();
     }, []);
 
 
@@ -97,7 +106,7 @@ async function fetchMontreal() {
         backgroundImage:`url(${backImage})`,
         backgroundRepeat:'no-repeat',
         backgroundSize:'cover',
-        backgroundColor: isDarkMode ? '#4D609C': '#030616' ,        
+        backgroundColor: isDarkMode ? '#030616' : '#4D609C',        
         color:'#F2F5F9',
         padding:"15px 30px 35px 30px",
         backgroundAttachment: 'fixed',
