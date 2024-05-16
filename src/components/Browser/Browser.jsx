@@ -55,7 +55,6 @@ export default function Browser() {
         console.error('Error fetching weather data:', error);
       }
     }
-// console.log(lat,lon);
 // call other cities
 
 async function fetchNY() {

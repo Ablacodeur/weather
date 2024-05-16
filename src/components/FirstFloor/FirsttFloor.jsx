@@ -33,7 +33,6 @@ export default function FirstFloor({getTheName,nameValue }) {
   // Stocker les prévisions filtrées dans un tableau
   const filteredNextHours = filterNextThreeHours();
 
-  console.log(nameValue);
   return (
     <Box>
       <Stack

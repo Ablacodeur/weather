@@ -11,7 +11,6 @@ export default function Navbar({ searchedLocation, getTheMode }) {
   const [searchText, setSearchText] = useState('Tokyo');
   const [location, setLocation] = useState([]);
 
-  console.log(isDarkMode);
   const toggleDarkMode = () => {
     setIsDarkMode((prevMode) => !prevMode);
     getTheMode(isDarkMode)
