@@ -12,13 +12,14 @@ export default function FirstFloor({getTheName,nameValue }) {
   const timezone = weather.timezone_offset; // Assuming timezone_offset contains the offset in seconds
 
   // Fonction pour convertir l'heure UTC en heure locale en fonction du décalage horaire spécifique à la ville
-  const convertUTCToLocalTime = (utcTimestamp, timezoneOffset) => {
+    const convertUTCToLocalTime = (utcTimestamp, timezoneOffset) => {
     const date = new Date(utcTimestamp * 1000 + timezoneOffset * 1000); // Ajouter le décalage horaire spécifique à la ville en millisecondes
-    const hours = date.getUTCHours(); // Obtenir l'heure UTC
+    let hours = date.getUTCHours(); // Obtenir l'heure UTC
     const minutes = date.getUTCMinutes(); // Obtenir les minutes UTC
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-  
-  };
+    const amPM = hours >= 12 ? 'PM' : 'AM'; // Déterminer AM ou PM
+    hours = (hours % 12) || 12; // Convertir en format 12 heures
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${amPM}`;
+};
 
   // Fonction pour filtrer les prévisions toutes les trois heures
   function filterNextThreeHours() {

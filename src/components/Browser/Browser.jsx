@@ -106,7 +106,7 @@ async function fetchMontreal() {
         backgroundImage:`url(${backImage})`,
         backgroundRepeat:'no-repeat',
         backgroundSize:'cover',
-        backgroundColor: isDarkMode ? '#030616' : '#4D609C',        
+        backgroundColor: isDarkMode ?  '#4D609C':'#030616',        
         color:'#F2F5F9',
         padding:"15px 30px 35px 30px",
         backgroundAttachment: 'fixed',

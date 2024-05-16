@@ -1,4 +1,5 @@
 ### Run
+- npm i
 - npm start
 ## BUILD
 in the .env you need
